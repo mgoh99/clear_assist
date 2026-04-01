@@ -5,3 +5,4 @@
 /output/
 .firecrawl/
 *.json.bak
+.obsidian/
