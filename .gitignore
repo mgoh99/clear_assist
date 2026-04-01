@@ -1,0 +1,7 @@
+.DS_Store
+*.env
+.env.*
+/scripts/*.log
+/output/
+.firecrawl/
+*.json.bak
