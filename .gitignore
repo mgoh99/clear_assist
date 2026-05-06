@@ -1,8 +1,8 @@
 .DS_Store
 *.env
 .env.*
-/scripts/*.log
-/output/
+/output/*
+!/output/.gitkeep
 .firecrawl/
 *.json.bak
 .obsidian/

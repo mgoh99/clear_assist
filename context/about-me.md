@@ -32,3 +32,11 @@ Example:
 - Running a 50-person commercial interior design firm
 - YPO member since 2022
 - Based in Toronto, travel frequently to Vancouver and New York
+
+## Internal domains and meeting rooms
+
+Used to decide whether a meeting is external (travel signal) or internal.
+
+- **Internal email domains:** `yourcompany.com`, `sistercompany.com`
+- **Internal meeting rooms:** Room A, Room B (at HQ address)
+- **Virtual meeting URL patterns:** `teams.microsoft.com`, `meet.google.com`, `zoom.us`
