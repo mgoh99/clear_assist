@@ -1,122 +1,156 @@
-# Clear Assist
+# ClearSpace Agent Framework Template
 
-A Claude Code workspace that acts as your AI chief of staff — handling email triage, calendar management, drafting, and research through Microsoft 365.
+The standard starting template for any ClearSpace agent. Defines the file layout, instruction conventions, and tool integrations needed to get an agent running — same template across **Nanobot**, **Hermes**, and **Claude Code**.
 
-This is a **template**. Clone it, fill in the placeholders in `context/` and `CLAUDE.md`, and you have a personal CoS workspace operating against your Outlook, calendar, Teams, and Planner.
+This repo ships with a **chief-of-staff** example agent (Outlook, Teams, Calendar, Planner via Microsoft 365). Fork it, replace the example contents, and you have a new agent on the same framework.
 
 ---
 
-## What it does
+## Why a template
 
-- **Inbox triage** — classify, unsubscribe, archive, and draft replies in Outlook
-- **Calendar management** — check availability, schedule meetings
-- **Drafting** — emails, Teams messages, intros, documents in your voice
-- **Planner tasks** — assign work to teammates from a one-line command
-- **People lookup** — find contacts by searching directory + calendar + email
+Every agent we run at ClearSpace needs the same skeleton:
 
-All of this is driven by the slash commands in `.claude/commands/`. Add or edit them to fit your operating model.
+- A canonical instructions file the harness reads on launch
+- A tools/command reference the agent consults before hitting any service
+- A `context/` folder holding the operator's profile, goals, and key relationships
+- Slash commands or recipes the operator can invoke
+- A predictable place for outputs
+
+This repo is that skeleton. Every new ClearSpace agent starts here.
+
+---
+
+## Supported harnesses
+
+| Harness | Reads | Notes |
+|---|---|---|
+| Claude Code | `CLAUDE.md` (imports `AGENTS.md`) | Slash commands in `.claude/commands/` |
+| Nanobot | `AGENTS.md` | |
+| Hermes | `AGENTS.md` | |
+| Codex / Aider / others | `AGENTS.md` | Standard convention |
+
+`AGENTS.md` is the single source of truth. `CLAUDE.md` is a thin Claude Code-specific shim that imports it — keeps instructions in one place across every harness.
+
+---
+
+## File layout
+
+```
+clear_assist/
+├── AGENTS.md             # Canonical agent instructions (all harnesses)
+├── CLAUDE.md             # Claude Code entry point — imports AGENTS.md
+├── tools.md              # Command reference (syntax, parsing rules, IDs)
+├── README.md             # This file
+├── context/
+│   ├── about-me.md       # Operator background, voice, preferences
+│   ├── goals.md          # Annual goals — agent prioritizes against these
+│   ├── people.md         # Key relationships
+│   └── scheduling.md     # Calendar rules and constraints
+├── .claude/
+│   ├── commands/         # Slash commands (Claude Code)
+│   └── settings.local.json
+└── output/               # Agent-generated artifacts (gitignored)
+```
 
 ---
 
 ## Prerequisites
 
-Claude Code installed:
+At minimum, install the harness you plan to use. For the included chief-of-staff example, also install the Microsoft 365 CLI.
+
 ```bash
+# Claude Code
 npm install -g @anthropic-ai/claude-code
+
+# Microsoft 365 CLI (for the example chief-of-staff agent)
+npm install -g @pnp/cli-microsoft365
+m365 login
+m365 status
+```
+
+Verify Graph access:
+
+```bash
+m365 request --url "https://graph.microsoft.com/v1.0/me" --output json
 ```
 
 ---
 
 ## Setup
 
-### 1. Microsoft 365 CLI
+### 1. Fork and rename
 
-```bash
-npm install -g @pnp/cli-microsoft365
-m365 login
-m365 status   # confirm your account
-```
+Clone the template, rename the directory to your agent's purpose.
 
-Verify Graph access:
-```bash
-m365 request --url "https://graph.microsoft.com/v1.0/me" --output json
-```
-
-### 2. Fill in your context
-
-Edit each file in `context/`:
+### 2. Fill in `context/`
 
 | File | What to fill in |
 |---|---|
-| `context/about-me.md` | Name, role, company, timezone, communication style, internal domains |
-| `context/goals.md` | Annual goals — Claude prioritizes against these |
-| `context/people.md` | Key people with emails and context |
-| `context/scheduling.md` | Booking rules, hard constraints |
+| `context/about-me.md` | Name, role, company, timezone, voice, internal domains |
+| `context/goals.md` | Top-level goals the agent should optimize against |
+| `context/people.md` | Key contacts with emails and context |
+| `context/scheduling.md` | Booking rules and hard constraints |
 
-### 3. Personalize `CLAUDE.md`
+### 3. Personalize `AGENTS.md`
 
-Replace `YOUR_NAME` and `YOUR_TIMEZONE` throughout. Adjust Hard Rules to your context. Add or remove services in the Connected Services table.
+Replace `YOUR_NAME` and `YOUR_TIMEZONE`. Adjust the **Hard Rules** for your operator. Add or remove rows in the **Connected Services** table.
 
 ### 4. Cache stable IDs in `tools.md`
 
-The bottom of `tools.md` has an "IDs Reference" section. Run the lookup commands once and paste the IDs in (Archive folder, Planner plan/bucket IDs, frequent contacts' AAD IDs). After that, slash commands run with no extra lookups.
+The bottom of `tools.md` has an "IDs Reference" block. Run the lookup commands once and paste the IDs in (Archive folder, Planner plan/bucket IDs, frequent contacts' AAD IDs). Slash commands then run with no extra lookups.
+
+### 5. Pick your harness
+
+```bash
+# Claude Code
+cd clear_assist && claude
+
+# Nanobot / Hermes — point the harness at this directory; AGENTS.md loads automatically
+```
 
 ---
 
-## Usage
-
-```bash
-cd clear_assist
-claude
-```
-
-Built-in slash commands:
+## Built-in slash commands (Claude Code)
 
 | Command | What it does |
 |---|---|
-| `/triage_inbox` | Pass through Outlook — unsub, archive, draft replies |
-| `/contact_find <Name>` | Find email + AAD ID + Teams chat ID for a person |
-| `/planner_add <Name>: <task>` | Add a Planner task assigned to a teammate |
+| `/triage_inbox` | One-pass Outlook triage — unsubscribe, archive, draft replies |
+| `/contact_find <Name>` | Resolve email + AAD ID + Teams chat ID for a person |
+| `/planner_add <Name>: <task>` | Create a Planner task assigned to a teammate |
 
-Or just speak naturally:
-- `triage my inbox`
-- `what's on my calendar today`
-- `draft a reply to NAME about TOPIC`
-- `schedule a meeting with NAME next week`
+Or speak naturally: `triage my inbox`, `what's on my calendar today`, `draft a reply to NAME about TOPIC`, `schedule a meeting with NAME next week`.
 
 ---
 
-## File structure
+## Adapting the template for a new agent
 
-```
-clear_assist/
-├── CLAUDE.md              # Main instructions for Claude
-├── tools.md               # Command reference (M365 syntax + parsing rules + IDs)
-├── README.md              # This file
-├── context/
-│   ├── about-me.md        # Background and preferences
-│   ├── goals.md           # Annual goals
-│   ├── people.md          # Key contacts
-│   └── scheduling.md      # Scheduling rules
-├── .claude/commands/      # Slash commands (templates — edit freely)
-└── output/                # Generated artifacts (decks, datasets, write-ups)
-```
+The framework is the file layout and the rules in `AGENTS.md`. To repurpose:
+
+1. **Swap context** — rewrite `context/*.md` for the new operator and goals.
+2. **Swap tools** — replace the M365 sections in `tools.md` with the services your agent needs (Salesforce, Slack, Notion, Linear, etc.).
+3. **Swap commands** — edit or replace files in `.claude/commands/`. Each `.md` filename becomes the slash command name.
+4. **Update `AGENTS.md` Connected Services table** — match the tool reference.
+
+Hard Rules and writing style stay unless you have a specific reason to change them.
 
 ---
 
 ## Adding services
 
-This template ships with M365 only. To add Google Workspace, Todoist, Obsidian, etc.:
+To add Google Workspace, Todoist, Salesforce, etc.:
 
-1. Add the service row to the Connected Services table in `CLAUDE.md`.
-2. Add a section to `tools.md` with command syntax + parsing rules.
+1. Add a row to the **Connected Services** table in `AGENTS.md`.
+2. Add a section to `tools.md` with command syntax + parsing rules + gotchas.
 3. Update or add slash commands in `.claude/commands/` to use the new service.
+
+Always prefer a CLI over an MCP when both exist (per `AGENTS.md` § Connected Services).
 
 ---
 
 ## Tips
 
-- **Be specific in `context/about-me.md`** — Claude mirrors that voice in every draft.
-- **Update `context/people.md`** as Claude finds new contacts. Use `/contact_find` to backfill.
-- **Cache IDs in `tools.md`** once. Slash commands stay fast.
-- **Edit slash commands freely.** They're plain Markdown files. Adapt them to your operating cadence.
+- **Be specific in `context/about-me.md`** — the agent mirrors that voice in every draft.
+- **Update `context/people.md` as the agent finds new contacts.** `/contact_find` will backfill automatically.
+- **Cache IDs in `tools.md` once.** Slash commands stay fast.
+- **Edit slash commands freely.** They're plain Markdown — adapt them to your operating cadence.
+- **Single source of truth.** Edit `AGENTS.md`, not `CLAUDE.md` — the latter just imports the former.
