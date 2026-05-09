@@ -53,11 +53,14 @@ Access each resource based on the "When to Access" column — not before every t
 
 | Description | Purpose | Location | When to Access |
 |-------------|---------|----------|----------------|
+| Persona / Soul | The agent's voice, tone, and identity — how to communicate, not what to do. Some harnesses (Nanobot, Hermes) load this automatically; on harnesses that don't, treat it as part of the system prompt anyway. | `SOUL.md` | Always — informs every response |
+| Long-term memory | Persistent facts, preferences, and learned patterns carried across sessions. Append new facts as they emerge; never delete without confirmation. | `MEMORY.md` | At session start; append during the session |
+| Heartbeat cadence | What to do on scheduled wake-ups and idle ticks (proactive checks, follow-ups, daily routines). Defines the rhythm of unprompted work. | `HEARTBEAT.md` | On scheduled / autonomous wake-ups |
 | About Me | Background, preferences, working style | `context/about-me.md` | Drafting, tone calibration |
 | Goals | Annual goals — everything cascades up to these | `context/goals.md` | Prioritizing, deciding |
 | People & Relationships | Key people. **If a person isn't here, search Outlook by name. If found, add them before proceeding.** | `context/people.md` | Looking up people |
 | Scheduling | Booking rules and calendar preferences | `context/scheduling.md` | Scheduling |
-| Tools reference | Command syntax, parsing rules, IDs | `tools.md` | Before invoking any connected service |
+| Tools reference | Command syntax, parsing rules, IDs. (Filename is `tools.md` here / `TOOLS.md` on Nanobot. Hermes doesn't use a file — tools come from the runtime registry.) | `tools.md` | Before invoking any connected service |
 
 ---
 
