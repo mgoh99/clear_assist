@@ -13,7 +13,7 @@ Every agent we run at ClearSpace needs the same skeleton:
 - A canonical instructions file the harness reads on launch
 - A tools/command reference the agent consults before hitting any service
 - A `context/` folder holding the operator's profile, goals, and key relationships
-- Slash commands or recipes the operator can invoke
+- Reusable skills the agent can invoke automatically when relevant
 - A predictable place for outputs
 
 This repo is that skeleton. Every new ClearSpace agent starts here.
@@ -24,9 +24,9 @@ This repo is that skeleton. Every new ClearSpace agent starts here.
 
 | Harness | Reads | Notes |
 |---|---|---|
-| Claude Code | `CLAUDE.md` (imports `AGENTS.md`) | Slash commands in `.claude/commands/` |
-| Nanobot | `AGENTS.md` | |
-| Hermes | `AGENTS.md` | |
+| Claude Code | `CLAUDE.md` (imports `AGENTS.md`) | Skills in `skills/<name>/SKILL.md` |
+| Nanobot | `AGENTS.md` | Skills in `skills/<name>/SKILL.md` |
+| Hermes | `AGENTS.md` | Skills in `skills/<name>/SKILL.md` |
 | Codex / Aider / others | `AGENTS.md` | Standard convention |
 
 `AGENTS.md` is the single source of truth. `CLAUDE.md` is a thin Claude Code-specific shim that imports it — keeps instructions in one place across every harness.
@@ -46,9 +46,11 @@ clear_assist/
 │   ├── goals.md          # Annual goals — agent prioritizes against these
 │   ├── people.md         # Key relationships
 │   └── scheduling.md     # Calendar rules and constraints
+├── skills/
+│   └── contact-find/     # Reusable skill — model-invoked via SKILL.md frontmatter
+│       └── SKILL.md
 ├── .claude/
-│   ├── commands/         # Slash commands (Claude Code)
-│   └── settings.local.json
+│   └── settings.local.json  # Claude Code machine-local permissions (gitignored)
 └── output/               # Agent-generated artifacts (gitignored)
 ```
 
@@ -97,7 +99,7 @@ Replace `YOUR_NAME` and `YOUR_TIMEZONE`. Adjust the **Hard Rules** for your oper
 
 ### 4. Cache stable IDs in `tools.md`
 
-The bottom of `tools.md` has an "IDs Reference" block. Run the lookup commands once and paste the IDs in (Archive folder, Planner plan/bucket IDs, frequent contacts' AAD IDs). Slash commands then run with no extra lookups.
+The bottom of `tools.md` has an "IDs Reference" block. Run the lookup commands once and paste the IDs in (Archive folder, Planner plan/bucket IDs, frequent contacts' AAD IDs). Skills then run with no extra lookups.
 
 ### 5. Pick your harness
 
@@ -110,15 +112,15 @@ cd clear_assist && claude
 
 ---
 
-## Built-in slash commands (Claude Code)
+## Built-in skills
 
-| Command | What it does |
+| Skill | What it does |
 |---|---|
-| `/triage_inbox` | One-pass Outlook triage — unsubscribe, archive, draft replies |
-| `/contact_find <Name>` | Resolve email + AAD ID + Teams chat ID for a person |
-| `/planner_add <Name>: <task>` | Create a Planner task assigned to a teammate |
+| `contact-find` | Resolve email + AAD ID + Teams chat ID for a person via Microsoft Graph |
 
-Or speak naturally: `triage my inbox`, `what's on my calendar today`, `draft a reply to NAME about TOPIC`, `schedule a meeting with NAME next week`.
+Skills are model-invoked — say what you want (`find Chris Ho`, `look up Sarah's Teams chat ID`) and the matching skill loads automatically. No slash prefix.
+
+You can also speak naturally for anything else: `triage my inbox`, `what's on my calendar today`, `draft a reply to NAME about TOPIC`, `schedule a meeting with NAME next week`.
 
 ---
 
@@ -128,7 +130,7 @@ The framework is the file layout and the rules in `AGENTS.md`. To repurpose:
 
 1. **Swap context** — rewrite `context/*.md` for the new operator and goals.
 2. **Swap tools** — replace the M365 sections in `tools.md` with the services your agent needs (Salesforce, Slack, Notion, Linear, etc.).
-3. **Swap commands** — edit or replace files in `.claude/commands/`. Each `.md` filename becomes the slash command name.
+3. **Swap skills** — edit or replace folders under `skills/`. Each `skills/<name>/SKILL.md` has frontmatter (`name`, `description`) — the description tells the model when to invoke it.
 4. **Update `AGENTS.md` Connected Services table** — match the tool reference.
 
 Hard Rules and writing style stay unless you have a specific reason to change them.
@@ -141,7 +143,7 @@ To add Google Workspace, Todoist, Salesforce, etc.:
 
 1. Add a row to the **Connected Services** table in `AGENTS.md`.
 2. Add a section to `tools.md` with command syntax + parsing rules + gotchas.
-3. Update or add slash commands in `.claude/commands/` to use the new service.
+3. Update or add skills in `skills/<name>/SKILL.md` to use the new service.
 
 Always prefer a CLI over an MCP when both exist (per `AGENTS.md` § Connected Services).
 
@@ -150,7 +152,7 @@ Always prefer a CLI over an MCP when both exist (per `AGENTS.md` § Connected Se
 ## Tips
 
 - **Be specific in `context/about-me.md`** — the agent mirrors that voice in every draft.
-- **Update `context/people.md` as the agent finds new contacts.** `/contact_find` will backfill automatically.
-- **Cache IDs in `tools.md` once.** Slash commands stay fast.
-- **Edit slash commands freely.** They're plain Markdown — adapt them to your operating cadence.
+- **Update `context/people.md` as the agent finds new contacts.** The `contact-find` skill will backfill automatically.
+- **Cache IDs in `tools.md` once.** Skills stay fast.
+- **Edit skills freely.** Each `SKILL.md` is plain Markdown with frontmatter — adapt the body to your operating cadence, and tune the `description` to match how you actually phrase requests.
 - **Single source of truth.** Edit `AGENTS.md`, not `CLAUDE.md` — the latter just imports the former.

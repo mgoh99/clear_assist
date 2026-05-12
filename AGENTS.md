@@ -4,7 +4,7 @@ Canonical instructions for any agent running in this workspace — Nanobot, Herm
 
 **This is not a development project.** It's an agent workspace built on the **ClearSpace agent framework template** — no app code, no builds, no deploys. The agent operates here as a productivity and strategy partner, executing tasks across connected services (email, calendar, Teams, tasks, notes).
 
-The example agent shipped with this template is a **chief-of-staff**. To repurpose for another agent type, swap the contents of `context/`, `tools.md`, and `.claude/commands/`. The framework (file layout, hard rules, output conventions) stays the same.
+The example agent shipped with this template is a **chief-of-staff**. To repurpose for another agent type, swap the contents of `context/`, `tools.md`, and `skills/`. The framework (file layout, hard rules, output conventions) stays the same.
 
 ---
 

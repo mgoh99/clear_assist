@@ -10,17 +10,15 @@ Entry point for Claude Code. The canonical agent instructions live in [AGENTS.md
 
 These supplement (don't replace) the rules in `AGENTS.md`.
 
-### Slash commands
+### Skills
 
-Pre-built commands live in `.claude/commands/`. Each is a plain Markdown file — edit freely.
+Reusable capabilities live in `skills/<name>/SKILL.md`. Each skill has frontmatter (`name`, `description`) that Claude reads to decide when to invoke it — no slash command needed, just describe the task and the matching skill loads automatically.
 
-| Command | What it does |
+| Skill | What it does |
 |---|---|
-| `/triage_inbox` | One-pass Outlook triage — classify, unsubscribe, archive, draft replies |
-| `/contact_find <Name>` | Resolve email + AAD ID + Teams chat ID for a person |
-| `/planner_add <Name>: <task>` | Create a Planner task assigned to a teammate |
+| `contact-find` | Resolve email + AAD ID + Teams chat ID for a person via Microsoft Graph |
 
-To add a command: drop a new `.md` file in `.claude/commands/`. The filename becomes the slash name.
+To add a skill: create `skills/<kebab-name>/SKILL.md` with a `description` field that lists the triggers (verbs/phrases the user is likely to say). Skills work across Claude Code, Nanobot, and Hermes — same file, same convention.
 
 ### Settings
 

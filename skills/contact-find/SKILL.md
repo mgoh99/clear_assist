@@ -1,4 +1,11 @@
-Find contact info (email, AAD ID, Teams chat ID) for a person. Argument: the person's name (e.g. `/contact_find Chris Ho`).
+---
+name: contact-find
+description: Resolve a person's email, AAD ID, and Teams chat ID via Microsoft Graph. Use when the user asks to find contact info, look up an email, get someone's AAD/Teams ID, or says "find <Name>", "who is <Name>", "look up <Name>'s email", "get me <Name>'s Teams chat". Searches M365 directory, calendar attendees, and Outlook in parallel.
+---
+
+# Contact find
+
+Resolve contact info (email, AAD ID, Teams chat ID) for a person by name across Microsoft Graph.
 
 ## Instructions
 
@@ -6,7 +13,7 @@ Fire all searches in parallel via separate Bash calls. No narration — just exe
 
 1. **M365 directory:**
    ```bash
-   m365 request --url "https://graph.microsoft.com/v1.0/users?\$filter=startswith(displayName,'$ARGUMENTS')&\$select=displayName,mail,id" --output json 2>/dev/null
+   m365 request --url "https://graph.microsoft.com/v1.0/users?\$filter=startswith(displayName,'<Name>')&\$select=displayName,mail,id" --output json 2>/dev/null
    ```
 
 2. **Calendar attendees (last 14d + next 30d):**
@@ -17,7 +24,7 @@ Fire all searches in parallel via separate Bash calls. No narration — just exe
 
 3. **Outlook search:**
    ```bash
-   m365 search --scopes 'message' --queryText '$ARGUMENTS' --output json 2>/dev/null
+   m365 search --scopes 'message' --queryText '<Name>' --output json 2>/dev/null
    ```
    Extract from/to emails matching the name.
 
@@ -32,7 +39,7 @@ Steps 1–3 run in parallel. Step 4 runs after.
 ## Output
 
 ```
-$ARGUMENTS
+<Name>
   Email: <email>
   AAD ID: <id>
   Teams Chat ID: <chatId>
