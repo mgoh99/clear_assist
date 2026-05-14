@@ -48,6 +48,3 @@ Steps 1–3 run in parallel. Step 4 runs after.
 
 One line per field. "not found" if nothing across all searches. No extra commentary.
 
-## Write-back
-
-If a match is found and the person isn't yet in `context/people.md`, add them under the right section before reporting. Hard Rule #1 doesn't apply — file edits are local, not outbound.

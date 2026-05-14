@@ -144,7 +144,7 @@ Add more services (Google Workspace, Todoist, Obsidian, etc.) by extending this 
 
 ### Writing Style
 
-Adapt this to match YOUR_NAME's voice (see `context/about-me.md` for the full profile).
+Adapt this to match YOUR_NAME's voice (see `USER.md` for the full profile).
 
 - Direct, warm, plain English.
 - First sentence gets to the point — no preamble.

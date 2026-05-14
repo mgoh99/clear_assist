@@ -1,6 +1,6 @@
 # Tools — Command Reference
 
-Command syntax for every connected service listed in CLAUDE.md. Read this file **before** invoking any tool whose syntax you don't have in-context. The service inventory (what exists and when to use it) lives in CLAUDE.md § Connected Services.
+Command syntax for every connected service listed in AGENTS.md. Read this file **before** invoking any tool whose syntax you don't have in-context. The service inventory (what exists and when to use it) lives in AGENTS.md § Connected Services.
 
 ---
 

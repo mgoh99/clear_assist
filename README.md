@@ -12,7 +12,8 @@ Every agent we run at ClearSpace needs the same skeleton:
 
 - A canonical instructions file the harness reads on launch
 - A tools/command reference the agent consults before hitting any service
-- A `context/` folder holding the operator's profile, goals, and key relationships
+- A `USER.md` file holding the operator's profile, preferences, and key relationships
+- A `SOUL.md` file defining the agent's voice and operating principles
 - Reusable skills the agent can invoke automatically when relevant
 - A predictable place for outputs
 
@@ -39,13 +40,10 @@ This repo is that skeleton. Every new ClearSpace agent starts here.
 clear_assist/
 ├── AGENTS.md             # Canonical agent instructions (all harnesses)
 ├── CLAUDE.md             # Claude Code entry point — imports AGENTS.md
+├── USER.md               # Operator profile: identity, preferences, boundaries, goals
+├── SOUL.md               # Agent character: voice, principles, identity
 ├── tools.md              # Command reference (syntax, parsing rules, IDs)
 ├── README.md             # This file
-├── context/
-│   ├── about-me.md       # Operator background, voice, preferences
-│   ├── goals.md          # Annual goals — agent prioritizes against these
-│   ├── people.md         # Key relationships
-│   └── scheduling.md     # Calendar rules and constraints
 ├── skills/
 │   └── contact-find/     # Reusable skill — model-invoked via SKILL.md frontmatter
 │       └── SKILL.md
@@ -84,14 +82,10 @@ m365 request --url "https://graph.microsoft.com/v1.0/me" --output json
 
 Clone the template, rename the directory to your agent's purpose.
 
-### 2. Fill in `context/`
+### 2. Fill in `USER.md` and `SOUL.md`
 
-| File | What to fill in |
-|---|---|
-| `context/about-me.md` | Name, role, company, timezone, voice, internal domains |
-| `context/goals.md` | Top-level goals the agent should optimize against |
-| `context/people.md` | Key contacts with emails and context |
-| `context/scheduling.md` | Booking rules and hard constraints |
+- **`USER.md`** — Identity, role, communication preferences, timezone, boundaries, current goals, key relationships, decision style.
+- **`SOUL.md`** — Agent name, voice, principles, red lines, relationship to the user. Edit only if you want a different *agent*.
 
 ### 3. Personalize `AGENTS.md`
 
@@ -128,10 +122,10 @@ You can also speak naturally for anything else: `triage my inbox`, `what's on my
 
 The framework is the file layout and the rules in `AGENTS.md`. To repurpose:
 
-1. **Swap context** — rewrite `context/*.md` for the new operator and goals.
+1. **Swap profile** — rewrite `USER.md` for the new operator and goals; tweak `SOUL.md` if the voice should change.
 2. **Swap tools** — replace the M365 sections in `tools.md` with the services your agent needs (Salesforce, Slack, Notion, Linear, etc.).
 3. **Swap skills** — edit or replace folders under `skills/`. Each `skills/<name>/SKILL.md` has frontmatter (`name`, `description`) — the description tells the model when to invoke it.
-4. **Update `AGENTS.md` Connected Services table** — match the tool reference.
+4. **Update `AGENTS.md` Connected Services list** — match the tool reference.
 
 Hard Rules and writing style stay unless you have a specific reason to change them.
 
@@ -141,7 +135,7 @@ Hard Rules and writing style stay unless you have a specific reason to change th
 
 To add Google Workspace, Todoist, Salesforce, etc.:
 
-1. Add a row to the **Connected Services** table in `AGENTS.md`.
+1. Add a bullet to the **Connected Services** list in `AGENTS.md`.
 2. Add a section to `tools.md` with command syntax + parsing rules + gotchas.
 3. Update or add skills in `skills/<name>/SKILL.md` to use the new service.
 
@@ -151,8 +145,8 @@ Always prefer a CLI over an MCP when both exist (per `AGENTS.md` § Connected Se
 
 ## Tips
 
-- **Be specific in `context/about-me.md`** — the agent mirrors that voice in every draft.
-- **Update `context/people.md` as the agent finds new contacts.** The `contact-find` skill will backfill automatically.
+- **Be specific in `USER.md`** — the agent mirrors that voice and respects those boundaries in every draft.
+- **Capture new contacts in `USER.md` § Key relationships** as the `contact-find` skill discovers them.
 - **Cache IDs in `tools.md` once.** Skills stay fast.
 - **Edit skills freely.** Each `SKILL.md` is plain Markdown with frontmatter — adapt the body to your operating cadence, and tune the `description` to match how you actually phrase requests.
 - **Single source of truth.** Edit `AGENTS.md`, not `CLAUDE.md` — the latter just imports the former.
