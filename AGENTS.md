@@ -118,27 +118,27 @@ Read each file when relevant — not before every task.
 ### Connected Services
 
 1. If a CLI is available, use it instead of an MCP.
-3. **Command syntax lives in `tools.md`.** Read it before invoking any service whose syntax isn't already in your context.
-4. Minimize context bloat:
-   - Don't speculatively query services — ask before querying unless the task clearly requires it.
+2. **Command syntax lives in `tools.md`.** Read it before invoking any service whose syntax is not already in your context.
+3. Minimize context bloat:
+   - Do not speculatively query services — ask before querying unless the task clearly requires it.
    - One targeted query > multiple exploratory queries.
    - Batch related queries — if checking email AND calendar, do both in one turn.
 
-| Service | Type / Command | What It Enables | Work / Personal |
-|---------|----------------|-----------------|-----------------|
-| Microsoft 365 | CLI - `m365` | Email and calendar (Outlook), Teams messages, Planner. **Default channel for all internal messages.** | Work |
-| Playwright | CLI - `playwright` (via `npx`) | Headless browser automation — screenshots, PDFs, scraping JS-rendered pages, authenticated browsing, codegen. Use when a page needs JS rendering or interaction that plain HTTP fetch can't handle. | Work |
+Available services:
 
-Add additional services (Google Workspace, Todoist, Obsidian, etc.) by extending this table and adding their command reference into `tools.md`.
+- **Microsoft 365** (CLI - `m365`) — Outlook email + calendar, Teams messages, Planner. *Default channel for all internal messages.* **(Work)**
+- **Playwright** (CLI - `playwright` via `npx`) — Headless browser: screenshots, PDFs, scraping JS-rendered pages, authenticated browsing, codegen. Use when plain HTTP fetch cannot handle JS rendering or interaction. **(Work)**
+
+Add more services (Google Workspace, Todoist, Obsidian, etc.) by extending this list and adding the command reference into `tools.md`.
 
 ---
 
 ### Output Locations
 
-| Output type | Save to | Example |
-|---|---|---|
-| Single MD file (notes, summaries, write-ups) | `output/<descriptive-name>.md` | `output/2026-q2-review.md` |
-| Multi-file outputs (HTML + assets, decks, datasets) | `output/<descriptive-folder>/` | `output/quarterly-review/` |
+- **Single MD file** (notes, summaries, write-ups) → `output/<descriptive-name>.md`  
+  *e.g.* `output/2026-q2-review.md`
+- **Multi-file output** (HTML + assets, decks, datasets) → `output/<descriptive-folder>/`  
+  *e.g.* `output/quarterly-review/`
 
 ---
 
