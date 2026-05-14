@@ -125,6 +125,41 @@ EOF
 
 ---
 
+## Playwright (`playwright`)
+
+Headless browser automation. Reach for it when a page needs JavaScript rendering, authentication, or interaction (clicks, form fills, waits) that a plain HTTP fetch can't handle. For one-off captures, the CLI subcommands below are enough; for anything multi-step or repeatable, write a Node/Python script against the Playwright library instead of chaining CLI calls.
+
+Invoke via `npx playwright <command>` (no global install required). First run on a fresh machine triggers a browser download — run `npx playwright install` once if commands fail with "browser not installed."
+
+### Common commands
+
+```bash
+# Screenshot a page (full page = whole scroll height, not just viewport)
+npx playwright screenshot --full-page https://example.com /tmp/page.png
+
+# Save page as PDF (Chromium only)
+npx playwright pdf https://example.com /tmp/page.pdf
+
+# Open a visible browser pointed at a URL — useful for inspecting state interactively
+npx playwright open https://example.com
+
+# Codegen — record clicks/fills in a visible browser and emit a Playwright script
+npx playwright codegen https://example.com
+
+# Install / update browser binaries (one-time per machine; re-run after Playwright upgrades)
+npx playwright install
+```
+
+### Notes & gotchas
+
+- **Prefer CLI > MCP > Playwright.** Playwright is the heaviest option — only use it when lighter tools can't see the content (JS-rendered SPA, login-walled page, etc.).
+- **Default device:** the CLI loads Chromium with a desktop viewport. Pass `--device "iPhone 14"` (or any [Playwright device name](https://playwright.dev/docs/emulation)) to emulate mobile.
+- **Auth state:** the `screenshot`/`pdf`/`open` subcommands start from a clean profile every time — no cookies, no logged-in session. For authenticated capture, write a script that loads a saved `storageState.json`.
+- **Save outputs under `output/`**, per the AGENTS.md output policy (e.g. `output/screenshots/<name>.png`), not `/tmp/`, unless the file is genuinely throwaway.
+- **Headless by default.** Add `--browser firefox` or `--browser webkit` to test cross-browser; omit for Chromium.
+
+---
+
 ## IDs Reference (fill in once, reuse forever)
 
 Cache stable IDs here so commands above don't rely on lookups every time. Update when teams/plans change.
