@@ -105,15 +105,13 @@ These override everything else.
 
 ### Key Information Locations
 
-Access each resource based on the "When to Access" column — not before every task.
+Read each file when relevant — not before every task.
 
-| Description | Purpose | Location | When to Access |
-|-------------|---------|----------|----------------|
-| Persona / Soul | The agent's voice, tone, and identity — how to communicate, not what to do. Some harnesses (Nanobot, Hermes) load this automatically; on harnesses that don't, treat it as part of the system prompt anyway. | `SOUL.md` | Always — informs every response |
-| Long-term memory | Persistent facts, preferences, and learned patterns carried across sessions. Append new facts as they emerge; never delete without confirmation. | `MEMORY.md` | At session start; append during the session |
-| Heartbeat cadence | What to do on scheduled wake-ups and idle ticks (proactive checks, follow-ups, daily routines). Defines the rhythm of unprompted work. | `HEARTBEAT.md` | On scheduled / autonomous wake-ups |
-| About Me | Background, preferences, working style | `context/about-me.md` | Drafting, tone calibration |
-| Tools reference | Command syntax, parsing rules, IDs | `tools.md` | Before invoking any connected service |
+- **`SOUL.md`** — Voice, tone, identity. *Loaded every session.*
+- **`USER.md`** — Who the agent serves: identity, preferences, boundaries, goals. *Loaded every session.*
+- **`MEMORY.md`** — Long-term facts and learned patterns. Append as new things emerge; never delete without confirmation. *Read at session start.*
+- **`HEARTBEAT.md`** — What to do on scheduled wake-ups and idle ticks. *Read on autonomous runs.*
+- **`tools.md`** — Command syntax, parsing rules, IDs for connected services. *Read before invoking any service.*
 
 ---
 
