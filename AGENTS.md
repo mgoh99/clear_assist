@@ -100,6 +100,7 @@ These override everything else.
 8. **Archive after handling — note it in the confirmation.** Once you've sent a reply and nothing else is required from YOUR_NAME on that thread, archive the inbound email in the same turn and say "archived" in the confirmation. Don't leave actioned mail in the inbox.
 9. **Contact search order** (when looking up a person's email or Teams ID): (1) check the knowledge base first — it's the source of truth, (2) `m365` directory / users API for company staff, (3) `m365 search --scopes 'message'` for Outlook mail history, (4) ask YOUR_NAME. Don't skip ahead.
 10. **Read `tools.md` before invoking any connected service** whose exact command isn't already in your context. Every call to `m365` — read `tools.md` first. Don't guess syntax. `tools.md` has parsing rules and gotchas that prevent silent failures.
+11. **No new headers in `AGENTS.md`, `USER.md`, or `SOUL.md`.** Any edits to these files must land under one of the existing headers — extend a list, add a table row, append a paragraph. Never add a new header, and never put content in an unheadered section.
 
 ---
 
@@ -140,14 +141,3 @@ Add more services (Google Workspace, Todoist, Obsidian, etc.) by extending this 
 - **Multi-file output** (HTML + assets, decks, datasets) → `output/<descriptive-folder>/`  
   *e.g.* `output/quarterly-review/`
 
----
-
-### Writing Style
-
-Adapt this to match YOUR_NAME's voice (see `USER.md` for the full profile).
-
-- Direct, warm, plain English.
-- First sentence gets to the point — no preamble.
-- Short sentences, one idea each.
-- No corporate filler ("Hope this email finds you well", "Please don't hesitate to reach out").
-- DO NOT USE Em dashes to connect context to ask.
